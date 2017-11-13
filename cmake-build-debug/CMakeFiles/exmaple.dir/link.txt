@@ -1,0 +1,1 @@
+/usr/bin/cc -g  -rdynamic CMakeFiles/exmaple.dir/libfiber-soad.c.o CMakeFiles/exmaple.dir/example.c.o  -o exmaple 

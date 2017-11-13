@@ -12,7 +12,6 @@ void fiber1()
 		sched_nice(1, 0);
 		sched_yield();
 	}
-	return;
 }
 
 void fibonacchi()
@@ -28,7 +27,7 @@ void fibonacchi()
 		printf( "fibonacchi(%d) = %d\n", i, nextFib );
 		fib[0] = fib[1];
 		fib[1] = nextFib;
-		sched_yield();
+        sched_yield();
 	}
 }
 
@@ -40,7 +39,7 @@ void squares()
 	for ( i = 0; i < 10; ++ i )
 	{
 		printf( "%d*%d = %d\n", i, i, i*i );
-		sched_yield();
+        sched_yield();
 	}
 }
 

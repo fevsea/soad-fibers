@@ -1,0 +1,4 @@
+/home/alejandro/code/soad-fibers/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/alejandro/code/soad-fibers/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/alejandro/code/soad-fibers/cmake-build-debug/CMakeFiles/exmaple.dir
+/home/alejandro/code/soad-fibers/cmake-build-debug/CMakeFiles/soad.dir

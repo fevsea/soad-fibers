@@ -33,9 +33,11 @@ static int currentFiber = -1;
 static int inFiber = 0;
 /* The number of active fibers */
 static int numFibers = 0;
+static int old_fiber;
 
 /* The "main" execution context */
 static ucontext_t mainContext;
+
 
 /* Sets all the fibers to be initially inactive */
 void initFibers()
@@ -48,7 +50,6 @@ void initFibers()
 		fiberList[i].priority = 50;
 	}
 
-	return;
 }
 
 /* Switches from a fiber to main or from main to a fiber */
@@ -92,18 +93,13 @@ void fiberYield()
 		}
 
 	}
-	return;
 }
 
 int sched_yield(void){
 	/* If we are in a fiber, switch to the main process */
 	if ( inFiber )
 	{
-		/* Switch to the main context */
-		if(currentFiber==0){
-			LF_DEBUG_OUT1( "libfiber debug: Current fiber is already the most prioritary.", currentFiber );
-			return 0;
-		}
+		old_fiber = currentFiber;
 
 		LF_DEBUG_OUT1( "libfiber debug: Fiber %d yielding the processor...", currentFiber );
 
@@ -118,8 +114,8 @@ int sched_yield(void){
 		/* Saved the state so call the next fiber */
 		int next = currentFiber + 1;
 		if ( next >= numFibers) next = 0;
-		if (fiberList[currentFiber].id != fiberList[next].id) next = 0;
-		currentFiber = next
+		if (fiberList[currentFiber].priority != fiberList[next].priority) next = 0;
+		currentFiber = next;
 
 		LF_DEBUG_OUT1( "Switching to fiber %d.", currentFiber );
 		inFiber = 1;
@@ -129,6 +125,7 @@ int sched_yield(void){
 
 		if ( fiberList[currentFiber].active == 0 )
 		{
+            old_fiber = -2;
 			LF_DEBUG_OUT1( "Fiber %d is finished. Cleaning up.\n", currentFiber );
 			/* Free the "current" fiber's stack */
 			free( fiberList[currentFiber].stack );
@@ -142,7 +139,9 @@ int sched_yield(void){
 			}
 			fiberList[ numFibers ].active = 0;
 		}
-		return fiberList[next].id;
+        if (fiberList[next].id == old_fiber)
+            return 0;
+        return fiberList[next].id;
 	}
 }
 
@@ -199,7 +198,7 @@ static void fiberStart( void (*func)(void) )
 	fiberList[currentFiber].active = 0;
 
 	/* Yield control, but because active == 0, this will free the fiber */
-	fiberYield();
+	sched_yield();
 }
 
 int spawnFiber( void (*func)(void) )
@@ -241,7 +240,7 @@ int waitForAllFibers()
 	/* Execute the fibers until they quit */
 	while ( numFibers > fibersRemaining )
 	{
-		fiberYield();
+		sched_yield();
 	}
 
 	return LF_NOERROR;

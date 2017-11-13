@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/alejandro/code/soad-fibers/example.c
+libfiber.h
+/home/alejandro/code/soad-fibers/libfiber.h
+stdio.h
+-
+unistd.h
+-
+
+/home/alejandro/code/soad-fibers/libfiber-soad.c
+libfiber.h
+/home/alejandro/code/soad-fibers/libfiber.h
+stdlib.h
+-
+ucontext.h
+-
+
+/home/alejandro/code/soad-fibers/libfiber.h
+stdio.h
+-
+valgrind/valgrind.h
+-
+

@@ -1,0 +1,1 @@
+/usr/bin/cc -g  -rdynamic CMakeFiles/soad.dir/libfiber-soad.c.o CMakeFiles/soad.dir/basic-soad.c.o  -o soad 
